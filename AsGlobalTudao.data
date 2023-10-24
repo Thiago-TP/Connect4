@@ -1,0 +1,50 @@
+VC:	.string "YOU"
+PC:	.string "PC"
+chooseS:.string	"Choose your Symbol"
+chooseD:.string	"Choose the Difficulty"
+ganhou:	.string	"You win! :D"
+perdeu:	.string	"You lose! D:"
+empatou:.string "Tie! :o"
+#SpriteFundo:	.space	1024 # 32x32 - 1024 bytes para o stack de pixels de fundo
+.eqv	boardX0	48			# x do canto superior esquerdo do board no bmp
+.eqv	boardY0	32			# y do canto superior esquerdo do board no bmp
+.eqv	boardXf	256			# x do canto inferior direito do board no bmp
+.eqv	boardYf	224			# y do canto inferior direito do board no bmp
+.eqv	tileLen	32			# lado da tile quadrada do tabuleiro
+.eqv	selLen	16			# lado da sprite quadrada do seletor
+.eqv	selX0	152			# x neutro do seletor no tabuleiro/bmp (320/2 - 16/2 = 152)
+.eqv	selY	16			# y do seletor no tabuleiro	
+.eqv	selYdif	88			# y do seletor na tela de dificuldades
+.eqv	frameAddress	0xFF200604	# endereco que guarda o frame sendo exibido
+selX:		.word	152		# pos em x do seletor no tabuleiro
+#PosUltimaCasa:	.byte 	0		# indice no Board da ultima casa ocupada
+userSymbol:	.word 	0		# endereco da sprite do simbolo do jogador
+pcSymbol:	.word 	0		# endereco da sprite do simbolo do pc
+Board:		.byte 	0,0,0,0,0,0,0	# casas do board: 0 -> desocupado | 1 -> ocupado por user | 2 -> ocupado por PC
+			0,0,0,0,0,0,0
+			0,0,0,0,0,0,0
+			0,0,0,0,0,0,0
+			0,0,0,0,0,0,0
+			0,0,0,0,0,0,0
+IndicesGanhadores: .byte 0, 0, 0, 0
+strIAfacil:	.string "AI: easy"
+strIAmedia:	.string "AI: medium"
+strIAdificil:	.string "AI: hard"
+tempo:		.string	"texec:"
+instr:		.string	"instr:"
+cycles:		.string	"cycle:"
+I:		.word	0, 0		# num de instr antes e apos a jogada da IA
+T:		.word	0, 0		# tempo em ms antes e apos a jogada da IA
+C:		.word	0, 0		# tempo em ms antes e apos a jogada da IA
+
+.text
+.macro	caso(%reg1, %reg2, %below_rd, %exit_label, %offset)
+	beqz	%below_rd, %exit_label
+	bne	%reg1, a2, %exit_label
+	bne	%reg2, a2, %exit_label
+	
+	addi	a1, a7, %offset		# a1 = coluna a ser marcada
+	li	s0, 0			# jogada foi encontrada
+	call	ColocaPeca
+	j	%exit_label
+.end_macro

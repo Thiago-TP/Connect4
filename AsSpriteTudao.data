@@ -1,0 +1,7 @@
+.include "sprites/Easy.data"		# simb da dif facil
+.include "sprites/Mid.data"		# simb da dif media
+.include "sprites/Hard.data"		# simb da dif dificil
+.include "sprites/PedraAmarela.data"	# peca amarela
+.include "sprites/PedraVermelha.data"	# peca vermelha
+.include "sprites/Seletor.data"		# seletor
+.include "sprites/Tile.data"		# casa do tabuleiro
